@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Login from "./Components/Authentication/Login";
+import NotFound from "./Components/Authentication/NotFound";
+import SignUp from "./Components/Authentication/SignUp";
+import Home from "./Components/Home/Home";
+import Footer from "./Components/Shared/Footer";
+import Header from "./Components/Shared/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('accesssToken');
+    if (token) {
+      setLoggedIn(true)
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+
+      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}></Header>
+      <Routes>
+        <Route path="/" element={<Home></Home>} />
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/signup" element={<SignUp></SignUp>}></Route>
+        <Route path="*" element={<NotFound></NotFound>}></Route>
+      </Routes>
+      <Footer></Footer>
+      <ToastContainer></ToastContainer>
+   
     </div>
   );
 }
